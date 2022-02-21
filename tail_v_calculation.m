@@ -12,7 +12,7 @@ b = [linspace(0,5,20)]';%linspace(0.4,2,20)'; %amplitude (mu)
 %d = 0.2; %radius of tail (mu)
 
 %speed = Tail_velocity(f, L, b, n, a, d);
-duttyspeed = Tail_velocity_NOHEAD(f,L,b);
+duttyspeed = tail_velocity_NOHEAD(f,L,b);
 plot(L,duttyspeed)
 %surf(L,b,duttyspeed)
 grid on
@@ -30,7 +30,7 @@ h = 1e-8;
 plots = [];
  
 for B = b
-    F = @(L) Tail_velocity_NOHEAD(f,L,B);
+    F = @(L) tail_velocity_NOHEAD(f,L,B);
     Fdash = @(L) (F(L+h)-F(L-h))./(2.*h);
     plots = [plots fzero(Fdash,B)]; 
 end
