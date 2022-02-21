@@ -1,8 +1,15 @@
-function V_x = Velocity_Integral(Integrand, X)
-%UNTITLED3 Summary of this function goes here
-%   Detailed explanation goes here
+function V_x = Velocity_Integral(W_Fun, X, t)
+%Velocity_Integral Integrates W_Fun wrt x, to find the V_x of W_Fun
+%   W_Fun is a Wiggle Function of the form {y,dydt,dydx}
 
-PQ  = integral(Integrand, 0, X, 'ArrayValued', true);
+dydt = W_Fun{2};
+dydx = W_Fun{3};
+
+p  = @(x) (dydt(x,t).*dydx(x,t))./((1+(dydt(x,t).^2)).^(1./2));
+q  = @(x)  (1+2.*(dydx(x,t)).^2)./((1+(dydt(x,t)).^2).^(1./2));
+pq = @(x)  [p(x),q(x)];
+
+PQ  = integral(pq, X, 0, 'ArrayValued', true);
 V_x = PQ(1)./PQ(2);
 
 end

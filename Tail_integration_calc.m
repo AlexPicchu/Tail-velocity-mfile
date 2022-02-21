@@ -1,7 +1,6 @@
-%Tail wiggle variables
-%clear,clc
+% Integration for Sine Wave Tail
 
-%x = [];
+% Parameters
 t = 0;
 L = 1:100; %lambda - wavelength
 f = 1; % frequency]

@@ -1,6 +1,9 @@
 function F = Tail_velocity(f, L, b, n, a, d)
+% Calculates tail velcotity analytically (including the head)
 
 F = ((2.*f.*(pi.^2).*(b.^2))./L)...
     .*(1./(1+((4.*(pi.^2).*(b.^2))./(L.^2))...
     -((1+((2.*(pi.^2).*(b.^2))./L.^2)).^(1./2))...
     .*((3.*a)./(n.*L)).*(log10(d./(2.*L))+1)));
+
+end

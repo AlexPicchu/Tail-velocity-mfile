@@ -1,5 +1,6 @@
-% Velocity plots
-clear, clc
+% Analytical Velocity Calculations
+
+%% Velocity plots
 
 % all results are relative to mu
 
@@ -20,7 +21,8 @@ xlabel('speed (mu/s)')
 ylabel('wavelength (mu)')
 legend('2mu', '4mu', '6mu', ...
     '8mu', '10mu')
-%%
+
+%% Amplitude vs Optimum Wavelength
 f = 1;
 L = linspace(0,150,100000);
 b = [linspace(0,5,20)];
