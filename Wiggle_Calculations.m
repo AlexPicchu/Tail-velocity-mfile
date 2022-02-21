@@ -181,6 +181,33 @@ plot(b_Range,[speeds0(b_Range);speeds1;speedsSq;speedsSw],'linewidth',2);
 %  
 % plot(b_coeff,speeds2,speeds3)
 
+%% Sine vs Sine Wave
+
+% Parameters
+t = 0; b = 0.17; L = 1; f = 1;
+Coeffs0 = {{@(x)b; @(x)0} f L };
+b_Range = (0:0.1:2);
+
+% Wiggle Functions
+W_Fun0 = Fourier(Coeffs0);
+S      = Arc_Length(W_Fun0{3},-L,t);
+
+% SPEEDS
+
+V0_x = Velocity_Integral(W_Fun0, -L, t);
+speeds0 = @(B) V0_x*B.^0;
+
+speedsSin = [];
+for b = b_Range
+    Coeffs = {b f L };
+    W_Fun1 = Fourier(Coeffs);
+    X1      = X_Length(W_Fun1{3},S,-L,t);
+    V     = Velocity_Integral(W_Fun1, X1, t);
+    speedsSin = [speedsSin V];
+end
+
+plot(b_Range,[speeds0(b_Range);speedsSin],'linewidth',2);
+
 %% Fourier
 
 % Parameters

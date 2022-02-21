@@ -27,6 +27,33 @@ plot(X_Range,y2(X_Range,t),'linewidth',2)
 xlabel('X')
 ylabel('Y')
 
+%% Sine vs Sine Plot
+
+% Parameters
+t = 0; b = 0.17; L = 1; f = 1;
+b2 = 2;
+Coeffs1 = {{@(x)b; @(x)0} f L };
+Coeffs2 = {b2 f L };
+
+% Wiggle Functions
+W_Fun1 = Fourier(Coeffs1);
+W_Fun2 = Fourier(Coeffs2);
+
+S       = Arc_Length(W_Fun1{3},-L,t);
+X       = X_Length(W_Fun2{3},S,-L,t);
+
+X_Range = 0:-0.01:X;
+L_Range = 0:-0.01:-L;
+
+y1 = W_Fun1{1};
+y2 = W_Fun2{1};
+
+figure; grid on; hold on
+plot(L_Range,y1(L_Range,t),'linewidth',2)
+plot(X_Range,y2(X_Range,t),'linewidth',2)
+xlabel('X')
+ylabel('Y')
+
 %% Sine vs Square Plot
 
 % Parameters
@@ -98,8 +125,8 @@ Coeffs = {{@(x)b;@(x)0}   f L   ;...
           {@(x)b/2;@(x)0} f L/2 ;...
           {@(x)b/4;@(x)0} f L/4 ;...
           {@(x)b/8;@(x)0} f L/8};
-Coeffs = {{@(x)exp(-b2*x); @(x)-b2*exp(-b2*x)} f L }; Xend=-X; 
-X2end=L; b=0.6;
+Coeffs = {b2 f L }; Xend=-X; 
+X2end=L; b = 1;
 
 
 % Wiggle Function
