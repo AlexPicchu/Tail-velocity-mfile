@@ -125,40 +125,40 @@ Coeffs = {{@(x)b;@(x)0}   f L   ;...
           {@(x)b/2;@(x)0} f L/2 ;...
           {@(x)b/4;@(x)0} f L/4 ;...
           {@(x)b/8;@(x)0} f L/8};
-Coeffs = {b2 f L }; Xend=-X; 
-X2end=L; b = 1;
+% Coeffs = {b2 f L }; Xend=-X; 
+% X2end=L; b = 1;
 
 
 % Wiggle Function
 W_Fun = Fourier(Coeffs);
 
 y = W_Fun{1};
-y2 = W_Fun1{1};
+% y2 = W_Fun1{1};
 x = -(0:0.01:Xend);
-x2 = -(0:0.01:X2end);
+% x2 = -(0:0.01:X2end);
 
 yt = y(x, 0);
-y2t = y2(x2, 0);
+% y2t = y2(x2, 0);
 
 figure; ax = axes;
 plt = plot(x,yt,'linewidth',4); hold on;
-plt2 = plot(x2,y2t,'linewidth',4);
+% plt2 = plot(x2,y2t,'linewidth',4);
 pltH = plot(x(1:4),yt(1:4),'-o','MarkerSize',15,...
                                 'MarkerEdgeColor',[0,0.45,0.74],...
                                 'MarkerFaceColor',[0,0.45,0.74]);
-plt2H = plot(x2(1:4),y2t(1:4),'-o','MarkerSize',15,...
-                                'MarkerEdgeColor',[0.85,0.45,0],...
-                                'MarkerFaceColor',[0.85,0.45,0]);
+% plt2H = plot(x2(1:4),y2t(1:4),'-o','MarkerSize',15,...
+%                                 'MarkerEdgeColor',[0.85,0.45,0],...
+%                                 'MarkerFaceColor',[0.85,0.45,0]);
 xlabel('X')
 ylabel('Y')
 axis(ax,[-(X2end+0.1) 0.1 -2*b 2*b])
 for j = 1:length(T_Series)
     yt = y(x, T_Series(j)); 
-    y2t = y2(x2, T_Series(j));
+%     y2t = y2(x2, T_Series(j));
     plt.YData = yt;
-    plt2.YData = y2t;
+%     plt2.YData = y2t;
     pltH.YData = yt(1:4);
-    plt2H.YData = y2t(1:4);
+%     plt2H.YData = y2t(1:4);
     drawnow % limitrate % display updates
 end
 
@@ -196,16 +196,16 @@ end
 
 % Parameters
 b = 1; L = 1; f = 1;
-% Xend = L;
-Xend = -XSq;
-Tend = 1/f;
+Xend = L;
+% Xend = -XSq;
+Tend = 10*1/f;
 T_Series = linspace(0,1*Tend,1*200);
       
 Coeffs = {};
-for n = 1:10
-    Coeffs(n,:) = {4*b./(pi*(2*n-1)) f.*(2*n-1) L./(2*n-1)};
+for n = 1:100
+    Coeffs(n,:) = {4*b./(pi*(2*n-1)) f L./(2*n-1)};
 end
-
+% .*(2*n-1)
 % Wiggle Function
 W_Fun = Fourier(Coeffs);
 
@@ -235,14 +235,14 @@ end
 b = 1; L = 1; f = 1;
 Xend = L;
 % Xend = -XSw;
-Tend = 1/f;
+Tend = 10*1/f;
 T_Series = linspace(0,1*Tend,1*200);
       
 Coeffs = {};
 for n = 1:10
-    Coeffs(n,:) = {4*b./(pi*(2*n)) f*2*n L./(2*n)};
+    Coeffs(n,:) = {4*b./(pi*(2*n)) f L./(2*n)};
 end
-
+% *2*n
 % Wiggle Function
 W_Fun = Fourier(Coeffs);
 
