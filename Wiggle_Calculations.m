@@ -1,5 +1,9 @@
 % Wiggle Calculations
 
+Titlesize = 16;
+Labelsize = 14;
+Legsize = 10;
+
 %% b, f, L Initial Observation - Sine Wave
 
 % Parameters
@@ -25,8 +29,11 @@ for i = 1:length(b)
     speeds(i) = Velocity_Integral(W_Fun,L(end),t);
 end
 Vb = figure; plot(2*b,speeds,'linewidth',2); 
-title('Velocity vs Amplitude (Sine Wave)')
-xlabel('Amplitude (b), \mu'); ylabel('Velocity (V_x), \mu s^{-1}')
+title('\textbf{Velocity vs Amplitude} (Sine Wave)','Interpreter','latex','FontSize',Titlesize)
+xlabel('Amplitude $(b)$, $\mu$','Interpreter','latex','FontSize',Labelsize)
+ylabel('Velocity $(V_x)$, $\mu s^{-1}$','Interpreter','latex','FontSize',Labelsize)
+grid on
+set(groot,'defaultAxesTickLabelIntepreter','latex')
 exportgraphics(Vb,'Plots/Velocity-Amplitude.pdf','ContentType','vector')
 
 speeds = zeros(1,length(f));
@@ -36,8 +43,10 @@ for i = 1:length(f)
     speeds(i) = Velocity_Integral(W_Fun,L(end),t);
 end
 Vf = figure; plot(f,speeds,'linewidth',2);
-title('Velocity vs Frequency (Sine Wave)')
-xlabel('Wave Frequency (f), Hz'); ylabel('Velocity (V_x), \mu s^{-1}')
+title('\textbf{Velocity vs Frequency} (Sine Wave)','Interpreter','latex','FontSize',Titlesize)
+xlabel('Wave Frequency $(f)$, $Hz$','Interpreter','latex','FontSize',Labelsize)
+ylabel('Velocity $(V_x)$, $\mu s^{-1}$','Interpreter','latex','FontSize',Labelsize)
+grid on
 exportgraphics(Vf,'Plots/Velocity-Frequency.pdf','ContentType','vector')
 
 speeds = zeros(1,length(L));
@@ -47,8 +56,10 @@ for i = 1:length(L)
     speeds(i) = Velocity_Integral(W_Fun,20*L(i),t);
 end
 VL = figure; plot(20*L,speeds,'linewidth',2); 
-title('Velocity vs Wavelength (Sine Wave)')
-xlabel('Wavelength (\lambda), \mu'); ylabel('Velocity (V_x), \mu s^{-1}')
+title('\textbf{Velocity vs Wavelength} (Sine Wave)','Interpreter','latex','FontSize',Titlesize)
+xlabel('Wavelength $(\lambda)$, $\mu$','Interpreter','latex','FontSize',Labelsize)
+ylabel('Velocity $(V_x)$, $\mu s^{-1}$','Interpreter','latex','FontSize',Labelsize)
+grid on
 exportgraphics(VL,'Plots/Velocity-Wavelength.pdf','ContentType','vector')
 
 %% b and L Relationship - Sine Wave
@@ -63,9 +74,15 @@ for i = 1:length(L)
         speeds(j,i) = Velocity_Integral(W_Fun,20*L(i),t);
     end
 end
+
 VbL = figure; plot(20*L,speeds,'linewidth',2); 
-title('Velocity vs Amplitude and Wavelength (Sine Wave)')
-xlabel('Wavelength (\lambda), \mu'); ylabel('Velocity (V_x), \mu s^{-1}')
+title('\textbf{Velocity vs Amplitude and Wavelength} (Sine Wave)','Interpreter','latex','FontSize',Titlesize)
+xlabel('Wavelength $(\lambda)$, $\mu$','Interpreter','latex','FontSize',Labelsize)
+ylabel('Velocity $(V_x)$, $\mu s^{-1}$','Interpreter','latex','FontSize',Labelsize)
+grid on
+legendCell = strcat('{$b$ = }', string(num2cell(b)), '$\mu$');
+legend(legendCell,'Interpreter','latex','FontSize',Legsize)
+
 exportgraphics(VbL,'Plots/Velocity-Amplitude-Wavelength.pdf','ContentType','vector')
 
 %% b vs Optimum Wavelength - Sine Wave
@@ -82,9 +99,10 @@ for i = 1:length(b)
 end
 
 bLopt = figure; plot(b, plots, 'linewidth',2)
-title('Amplitude vs Optimum Wavelength (Sine Wave)')
+title('\textbf{Amplitude vs Optimum Wavelength} (Sine Wave)','Interpreter','latex','FontSize',Titlesize)
+ylabel('Wavelength $(\lambda)$, $\mu$','Interpreter','latex','FontSize',Labelsize)
+xlabel('Amplitude $(b)$, $\mu$','Interpreter','latex','FontSize',Labelsize)
 grid on
-ylabel('Wavelength (\lambda), \mu'), xlabel('Amplitude (b), \mu')
 exportgraphics(bLopt,'Plots/Amplitude-Optimum_Wavelength.pdf','ContentType','vector')
 
 L2b_Ratio = plots(end)/b(end); % b = 0.17, when L = 1 is optimum 
@@ -102,8 +120,12 @@ for i = 1:length(L)
     end
 end
 VfL = figure; plot(20*L,speeds,'linewidth',2); 
-title('Velocity vs Frequency and Wavelength (Sine Wave)')
-xlabel('Wavelength (\lambda), \mu'); ylabel('Velocity (V_x), \mu s^{-1}')
+title('\textbf{Velocity vs Frequency and Wavelength} (Sine Wave)','Interpreter','latex','FontSize',Titlesize)
+xlabel('Wavelength $(\lambda)$, $\mu$','Interpreter','latex','FontSize',Labelsize) 
+ylabel('Velocity $(V_x)$, $\mu s^{-1}$','Interpreter','latex','FontSize',Labelsize)
+grid on
+legendCell = strcat('{$f$ = }', string(num2cell(f)), '$Hz$');
+legend(legendCell,'Interpreter','latex','FontSize',Legsize)
 exportgraphics(VfL,'Plots/Velocity-Frequency-Wavelength.pdf','ContentType','vector')
 
 %% b and L - Sine Waves of Constant ARC Length
@@ -189,8 +211,11 @@ end
 
 VbGROW = figure;
 plot(b,[speeds0(b);speeds1;speeds2;speeds3],'linewidth',2); 
-xlabel('Amplitude Coefficient'); ylabel('Velocity')
-title('Velocity vs Amplitude Coefficients (Growing Sine Waves)')
+xlabel('Amplitude Coefficient $(b)$','Interpreter','latex','FontSize',Labelsize)
+ylabel('Velocity $(V_x)$, $\mu s^{-1}$','Interpreter','latex','FontSize',Labelsize)
+title('\textbf{Velocity vs Amplitude Coefficients} (Growing Sine Waves)','Interpreter','latex','FontSize',Titlesize)
+grid on
+legend('Func 1', 'Func 2', 'Func 3', 'Func 4','Interpreter','latex','FontSize',Legsize)
 exportgraphics(VbGROW,'Plots/Velocity-Amplitude(Growing Sines).pdf','ContentType','vector')
 
 %% Sine vs Fourier Waves
@@ -234,8 +259,11 @@ for i = 1:length(b)
 end
 
 VbFOURIER = figure; plot(b,[speeds0(b);speedsSq;speedsSw],'linewidth',2);
-xlabel('Amplitude Coefficient'); ylabel('Velocity')
-title('Velocity vs Amplitude Coefficients (Fourier Waves)')
+xlabel('Amplitude Coefficient $(b)$','Interpreter','latex','FontSize',Labelsize) 
+ylabel('Velocity $(V_x)$, $\mu s^{-1}$','Interpreter','latex','FontSize',Labelsize)
+title('\textbf{Velocity vs Amplitude Coefficients} (Fourier Waves)','Interpreter','latex','FontSize',Titlesize)
+grid on
+legend('Func 1', 'Func 2', 'Func 3','Interpreter','latex','FontSize',Legsize)
 exportgraphics(VbFOURIER,'Plots/Velocity-Amplitude(Fouriers).pdf','ContentType','vector')
 
 %% Sine vs Sine Wave
@@ -265,9 +293,12 @@ for i = 1:length(L)
     end
 end
 
-VbSine = figure; plot(b,[speeds0(b);speedsSin],'linewidth',2);
-xlabel('Amplitude'); ylabel('Velocity')
-title('Velocity vs Amplitude Coefficients (Sine Waves)')
+VbSine = figure; plot(b_Range,[speeds0(b_Range);speedsSin],'linewidth',2);
+xlabel('Amplitude $(b)$ $\mu$','Interpreter','latex','FontSize',Labelsize)
+ylabel('Velocity $(V_x)$ $\mu s^{-1}$','Interpreter','latex','FontSize',Labelsize)
+title('\textbf{Velocity vs Amplitude Coefficients} (Sine Waves)','Interpreter','latex','FontSize',Titlesize)
+grid on
+legend('Func 1', 'Func 2','Interpreter','latex','FontSize',Legsize)
 exportgraphics(VbSine,'Plots/Velocity-Amplitude(Sines).pdf','ContentType','vector')
 
 %% Flapper
@@ -287,8 +318,12 @@ for i = 1:length(T)
 end
 
 VtFLAP = figure; plot(T,speeds,'linewidth',2); 
-xlabel('Time'); ylabel('Velocity'); 
-title('Velocity vs Length and Time (Flapper)')
+xlabel('Time $(t)$ $s$','Interpreter','latex','FontSize',Labelsize)
+ylabel('Velocity $(V_x)$ $\mu s^{-1}$','Interpreter','latex','FontSize',Labelsize); 
+title('\textbf{Velocity vs Length and Time} (Flapper)','Interpreter','latex','FontSize',Titlesize)
+grid on
+legendCell = strcat('{$L$ = }', string(num2cell(X)), '$m$');
+legend(legendCell,'Interpreter','latex','FontSize',Legsize)
 exportgraphics(VtFLAP,'Plots/Velocity-Time(Flapper).pdf','ContentType','vector')
 
 %% Fourier / Growing Sine
@@ -310,9 +345,11 @@ for i = 1:length(T)
 end
 
 VtFOURIERrand = figure; plot(T,speeds,'linewidth',2);
-xlabel('Time'); ylabel('Velocity')
-title('Velocity vs Time (Growing Sine)')
-exportgraphics(VtFOURIERrand,'Plots/Velocity-Time(Growing Sine).pdf','ContentType','vector')
+xlabel('Time $(t)$ $s$','Interpreter','latex','FontSize',Labelsize)
+ylabel('Velocity $(V_x)$, $\mu s^{-1}$','Interpreter','latex','FontSize',Labelsize)
+title('\textbf{Velocity vs Time} (Random Fourier Wave)','Interpreter','latex','FontSize',Titlesize)
+grid on
+exportgraphics(VtFOURIERrand,'Plots/Velocity-Time(Random Fourier).pdf','ContentType','vector')
 
 %% Square
 
@@ -334,8 +371,10 @@ for i = 1:length(T)
 end
 
 VtSq = figure; plot(T,speeds,'linewidth',2);
-xlabel('Time'); ylabel('Velocity')
-title('Velocity vs Time (Square Waves)')
+xlabel('Time $(t)$ $s$','Interpreter','latex','FontSize',Labelsize); 
+ylabel('Velocity $(V_x)$ $\mu s^{-1}$','Interpreter','latex','FontSize',Labelsize)
+title('\textbf{Velocity vs Time} (Square Waves)','Interpreter','latex','FontSize',Titlesize)
+grid on
 exportgraphics(VtSq,'Plots/Velocity-Time(Square).pdf','ContentType','vector')
 
 %% Saw
@@ -357,7 +396,9 @@ for i = 1:length(T)
 end
 
 VtSw = figure; plot(T,speeds,'linewidth',2);
-xlabel('Time'); ylabel('Velocity')
-title('Velocity vs Time (Saw Waves)')
+xlabel('Time $(t)$ $s$','Interpreter','latex','FontSize',Labelsize)
+ylabel('Velocity $(V_x)$ $\mu s^{-1}$','Interpreter','latex','FontSize',Labelsize)
+title('\textbf{Velocity vs Time} (Saw Waves)','Interpreter','latex','FontSize',Titlesize)
+grid on
 exportgraphics(VtSw,'Plots/Velocity-Time(Saw).pdf','ContentType','vector')
 
