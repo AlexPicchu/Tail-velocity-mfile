@@ -3,6 +3,7 @@ function S = Arc_Length(dydx,X,t)
 %   Detailed explanation goes here
 
 integrand = @(x) sqrt(1+(dydx(x,t)).^2);
-S         = integral(integrand,X,0);
+
+S     = integral(integrand,X,0);
 
 end

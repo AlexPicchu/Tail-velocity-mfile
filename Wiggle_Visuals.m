@@ -240,7 +240,7 @@ T_Series = linspace(0,1*Tend,1*200);
       
 Coeffs = {};
 for n = 1:10
-    Coeffs(n,:) = {4*b./(pi*(2*n)) f L./(2*n)};
+    Coeffs(n,:) = {4*b./(pi*(2*n)) f*2*n L./(2*n)};
 end
 % *2*n
 % Wiggle Function

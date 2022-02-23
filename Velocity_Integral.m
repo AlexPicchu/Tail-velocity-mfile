@@ -8,8 +8,8 @@ else
     dydt = W_Fun{2};
     dydx = W_Fun{3};
 
-    p  = @(x) (dydt(x,t).*dydx(x,t))./((1+(dydt(x,t).^2)).^(1./2));
-    q  = @(x)  (1+2.*(dydx(x,t)).^2)./((1+(dydt(x,t)).^2).^(1./2));
+    p  = @(x) (dydt(x,t).*dydx(x,t))./((1+(dydx(x,t).^2)).^(1./2));
+    q  = @(x)  (1+2.*(dydx(x,t)).^2)./((1+(dydx(x,t)).^2).^(1./2));
     pq = @(x)  [p(x),q(x)];
 
     PQ  = integral(pq, X, 0, 'ArrayValued', true);

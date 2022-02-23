@@ -6,6 +6,18 @@
 b = 0:0.01:1; f = 0:0.01:1; L = 0:0.01:1;
 t = 0;
 
+T = 0:0.001:(1/f(end));
+speeds = zeros(1,length(T));
+% Wiggle Function
+W_Fun = Fourier({b(end),f(end),L(end)});
+for i = 1:length(T)
+    speeds(i) = Velocity_Integral(W_Fun,L(end),T(i));
+end
+Vb = figure; plot(T,speeds,'linewidth',2); 
+title('Velocity vs Time (Sine Wave)')
+xlabel('Time (t), s'); ylabel('Velocity (V_x), \mu s^{-1}')
+exportgraphics(Vb,'Plots/Velocity-Time(Sine).pdf','ContentType','vector')
+
 speeds = zeros(1,length(b));
 for i = 1:length(b)
     % Wiggle Function
@@ -93,6 +105,44 @@ VfL = figure; plot(20*L,speeds,'linewidth',2);
 title('Velocity vs Frequency and Wavelength (Sine Wave)')
 xlabel('Wavelength (\lambda), \mu'); ylabel('Velocity (V_x), \mu s^{-1}')
 exportgraphics(VfL,'Plots/Velocity-Frequency-Wavelength.pdf','ContentType','vector')
+
+%% b and L - Sine Waves of Constant ARC Length
+
+b = 0.01:0.1:1; f = 1; L = 0.01:0.01:1; %L = 0:0.01:2*pi; % ????? 
+t = 0;
+W_Fun0 = Fourier({b(end),f,L(end)});
+S0 = Arc_Length(W_Fun0{3},-L(end),t);
+
+speeds = zeros(length(b),length(L));
+for i = 1:length(L)
+    for j = 1:length(b)
+        % Wiggle Function
+        W_Fun = Fourier({0.1*b(j),f(end),8*L(i)});
+        X = X_Length(W_Fun{3},S0,-L(end),t);
+        speeds(j,i) = Velocity_Integral(W_Fun,X,t);
+    end
+end
+VbL = figure; plot(8*L,speeds,'linewidth',2); 
+title('Velocity vs Amplitude and Wavelength (Sine Wave Constant Arc Length)')
+xlabel('Wavelength (\lambda), \mu'); ylabel('Velocity (V_x), \mu s^{-1}')
+exportgraphics(VbL,'Plots/Velocity-Amplitude-Wavelength(ConstArcLen).pdf','ContentType','vector')
+
+%% b and L Relationship - Sine Wave
+
+b = 0:0.1:1; L = 0:0.01:1;
+
+speeds = zeros(length(b),length(L));
+for i = 1:length(L)
+    for j = 1:length(b)
+        % Wiggle Function
+        W_Fun = Fourier({b(j),f(end),20*L(i)});
+        speeds(j,i) = Velocity_Integral(W_Fun,20*L(i),t);
+    end
+end
+VbL = figure; plot(20*L,speeds,'linewidth',2); 
+title('Velocity vs Amplitude and Wavelength (Sine Wave)')
+xlabel('Wavelength (\lambda), \mu'); ylabel('Velocity (V_x), \mu s^{-1}')
+exportgraphics(VbL,'Plots/Velocity-Amplitude-Wavelength.pdf','ContentType','vector')
 
 %% Sine vs Growing Sine Waves (Varying Amplitude Coefficients)
 
@@ -193,27 +243,29 @@ exportgraphics(VbFOURIER,'Plots/Velocity-Amplitude(Fouriers).pdf','ContentType',
 % Parameters
 t = 0; b = 0.17; L = 1; f = 1;
 Coeffs0 = {{@(x)b; @(x)0} f L };
-b_Range = (0:0.1:2);
+b = (0:0.01:2); L = 0.1:0.1:1;
 
 % Wiggle Functions
 W_Fun0 = Fourier(Coeffs0);
-S      = Arc_Length(W_Fun0{3},-L,t);
+S      = Arc_Length(W_Fun0{3},-L(end),t);
 
 % SPEEDS
 
-V0_x = Velocity_Integral(W_Fun0, -L, t);
+V0_x = Velocity_Integral(W_Fun0, -L(end), t);
 speeds0 = @(B) V0_x*B.^0;
 
 speedsSin = [];
-for b = b_Range
-    Coeffs = {b f L };
-    W_Fun1 = Fourier(Coeffs);
-    X1      = X_Length(W_Fun1{3},S,-L,t);
-    V     = Velocity_Integral(W_Fun1, X1, t);
-    speedsSin = [speedsSin V];
+for i = 1:length(L)
+    for j = 1:length(b)
+        Coeffs = {b(j) f L(i) };
+        W_Fun1 = Fourier(Coeffs);
+        X1      = X_Length(W_Fun1{3},S,-L(i),t);
+        V     = Velocity_Integral(W_Fun1, X1, t);
+        speedsSin(i,j) = V;
+    end
 end
 
-VbSine = figure; plot(b_Range,[speeds0(b_Range);speedsSin],'linewidth',2);
+VbSine = figure; plot(b,[speeds0(b);speedsSin],'linewidth',2);
 xlabel('Amplitude'); ylabel('Velocity')
 title('Velocity vs Amplitude Coefficients (Sine Waves)')
 exportgraphics(VbSine,'Plots/Velocity-Amplitude(Sines).pdf','ContentType','vector')
@@ -239,14 +291,15 @@ xlabel('Time'); ylabel('Velocity');
 title('Velocity vs Length and Time (Flapper)')
 exportgraphics(VtFLAP,'Plots/Velocity-Time(Flapper).pdf','ContentType','vector')
 
-%% Fourier
+%% Fourier / Growing Sine
 
 % Parameters
 b = 1; f = 1; L = 1;
 T = 0:0.005:1;
-Coeffs = {{@(x)b;  @(x)0} f L   ;...
-          {@(x)b/2;@(x)0} f L/2 ;...
-          {@(x)b/4;@(x)0} f L/4};
+% Coeffs = {{@(x)b;  @(x)0} f L   ;...
+%           {@(x)b/2;@(x)0} f L/2 ;...
+%           {@(x)b/4;@(x)0} f L/4};
+Coeffs = {{@(x)-b*x;  @(x)-b} f L };
 
 % Wiggle Function
 W_Fun = Fourier(Coeffs);
@@ -258,14 +311,14 @@ end
 
 VtFOURIERrand = figure; plot(T,speeds,'linewidth',2);
 xlabel('Time'); ylabel('Velocity')
-title('Velocity vs Time (Random Fourier Wave)')
-exportgraphics(VtFOURIERrand,'Plots/Velocity-Time(Random Fourier).pdf','ContentType','vector')
+title('Velocity vs Time (Growing Sine)')
+exportgraphics(VtFOURIERrand,'Plots/Velocity-Time(Growing Sine).pdf','ContentType','vector')
 
 %% Square
 
 % Parameters
-b = 4; f = 1; L = 1;
-T = 0:0.005:1;
+b = 1; f = 1; L = 1;
+T = 0:0.01:1;
 Coeffs = {};
 for n = 1:10
     Coeffs(n,:) = {4*b./(pi*(2*n-1)) f.*(2*n-1) L./(2*n-1)};
@@ -274,6 +327,7 @@ end
 % Wiggle Function
 W_Fun = Fourier(Coeffs);
 
+XSq = 1;
 speeds = zeros(1,length(T));
 for i = 1:length(T)
     speeds(i) = Velocity_Integral(W_Fun, XSq, T(i));

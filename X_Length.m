@@ -4,6 +4,12 @@ function X = X_Length(dydx,S,X0,t)
 
 S2      = @(X) Arc_Length(dydx,X,t);
 problem = @(X) S2(X)-S;
-X       = fzero(problem,X0);
+
+if isnan(problem(X0))
+    X = -S;
+else
+    X       = fzero(problem,X0);
+end
+
 
 end
